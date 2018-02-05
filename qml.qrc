@@ -1,7 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>ConnectionDialog.qml</file>
+        <file>qml/AppMenuBar.qml</file>
+        <file>qml/ConnectionDialog.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/text/SendBar.qml</file>
+        <file>qml/text/TextPage.qml</file>
+        <file>qml/camera/CameraPage.qml</file>
     </qresource>
 </RCC>

@@ -1,10 +1,12 @@
 import QtQuick 2.9
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.3
 
 Dialog {
     id: connectionDialogRoot
     signal connected();
-    title: qsTr("连接")
+    title: qsTr("连接到服务器")
+    modal: true
+    focus: true
     contentItem: Grid {
         id: textfieldGrid
         spacing: 20
@@ -19,8 +21,12 @@ Dialog {
             }
             TextField {
                 id: addressTextfield
+                focus: true
                 placeholderText: qsTr("IP地址")
                 text: settings.serverAddress
+                onAccepted: {
+                    portTextfield.focus = true
+                }
             }
         }
         Column {
@@ -35,6 +41,9 @@ Dialog {
                 id: portTextfield
                 placeholderText: qsTr("端口号")
                 text: settings.serverPort
+                onAccepted: {
+                    connectButton.clicked()
+                }
             }
         }
         Row {
@@ -56,6 +65,18 @@ Dialog {
         Item {
             width: portColumn.width
             height: portColumn.height
+//            CheckBox {
+//                id: autoConnectCheckbox
+//                text: qsTr("自动连接")
+//                anchors.verticalCenter: parent.verticalCenter
+//                checked: settings.serverAutoconnect
+//                Component.onCompleted: {
+//                    if (checked) {
+//                        accepted()
+//                    }
+//                }
+//            }
+
             Button {
                 id: connectButton
                 anchors.right: parent.right
@@ -68,15 +89,17 @@ Dialog {
             }
         }
     }
+
     //    standardButtons: Dialog.Ok
 
     onAccepted: {
+        connectButton.enabled = false
         connectBusyindicator.visible = true
         statusLabel.text = qsTr("正在连接")
-        connectButton.enabled = false
         client.connectToServer(addressTextfield.text, portTextfield.text)
         settings.serverAddress = addressTextfield.text
         settings.serverPort = portTextfield.text
+//        settings.serverAutoconnect = autoConnectCheckbox.checked
     }
     Connections {
         target: client

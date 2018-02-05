@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     //添加上下文属性
     SocketParser * client = new SocketParser(&engine);
     engine.rootContext()->setContextProperty("client", client);
-    engine.load(QUrl(QLatin1String("qrc:/main.qml")));
+    engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
 

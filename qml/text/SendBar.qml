@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.3
 
 Row {
+    signal sended(string text);
     spacing: 20
     TextField {
         id: sendTextfield
@@ -28,6 +29,8 @@ Row {
         enabled: sendTextfield.text
         onClicked: {
             client.sendText(sendTextfield.text)
+            sended(sendTextfield.text)
+            sendTextfield.text = ""
         }
     }
 }

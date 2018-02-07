@@ -13,7 +13,7 @@ ApplicationWindow {
     title: qsTr("客户端")
 
     property color emphasizeColor: "MediumVioletRed"
-    property color backgroundColor: "LightSlateGray"
+    property color promptColor: "LightSlateGray"
 
     Component.onCompleted: {
         connectioDialog.open()

@@ -34,7 +34,7 @@ void SocketParser::connectToServer(const QString & address, const int port)
 
 void SocketParser::sendText(const QString &text)
 {
-    QDataStream out(m_client);
+    QTextStream out(m_client);
     qDebug() << "send text:" << text;
     out << text;
 }

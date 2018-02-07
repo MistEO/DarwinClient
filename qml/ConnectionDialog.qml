@@ -6,7 +6,8 @@ Dialog {
     signal connected();
     title: qsTr("连接到服务器")
     modal: true
-    focus: true
+
+
     contentItem: Grid {
         id: textfieldGrid
         spacing: 20
@@ -15,13 +16,12 @@ Dialog {
             id: addressColumn
             spacing: 5
             Label {
-                color: backgroundColor
+                color: promptColor
                 opacity: addressTextfield.text.length > 0
                 text: addressTextfield.placeholderText
             }
             TextField {
                 id: addressTextfield
-                focus: true
                 placeholderText: qsTr("IP地址")
                 text: settings.serverAddress
                 onAccepted: {
@@ -33,7 +33,7 @@ Dialog {
             id: portColumn
             spacing: 5
             Label {
-                color: backgroundColor
+                color: promptColor
                 opacity: portTextfield.text.length > 0
                 text: portTextfield.placeholderText
             }

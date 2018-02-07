@@ -32,6 +32,21 @@ void SocketParser::connectToServer(const QString & address, const int port)
     m_client->connectToHost(QHostAddress(address), port);
 }
 
+QString SocketParser::getAddress() const
+{
+    return m_client->peerAddress().toString();
+}
+
+quint16 SocketParser::getPort() const
+{
+    return m_client->peerPort();
+}
+
+QString SocketParser::getName() const
+{
+    return m_client->peerName();
+}
+
 void SocketParser::sendText(const QString &text)
 {
     QTextStream out(m_client);

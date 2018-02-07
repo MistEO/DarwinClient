@@ -7,6 +7,7 @@ Row {
     TextField {
         id: sendTextfield
         width: parent.width - parent.spacing - sendButton.width
+        selectByMouse: true
         onAccepted: {
             sendButton.clicked()
         }

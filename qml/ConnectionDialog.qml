@@ -3,10 +3,9 @@ import QtQuick.Controls 2.3
 
 Dialog {
     id: connectionDialogRoot
-    signal connected();
+    property bool connected: false
     title: qsTr("连接到服务器")
     modal: true
-
 
     contentItem: Grid {
         id: textfieldGrid
@@ -104,13 +103,17 @@ Dialog {
     Connections {
         target: client
         onConnected: {
+            connectionDialogRoot.close()
+            connected = true
             connectBusyindicator.visible = false
             connectButton.enabled = true
             statusLabel.text = ""
-            connected();
-            connectionDialogRoot.close()
         }
         onSocketError: {
+            if (!connectionDialogRoot.opened) {
+                open()
+            }
+            connected = false
             connectBusyindicator.visible = false
             connectButton.enabled = true
             statusLabel.text = error_string

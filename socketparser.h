@@ -13,6 +13,10 @@ public:
             const QString & address = QString("127.0.0.1"),
             const int port = 1240);
     Q_INVOKABLE void sendText(const QString & text);
+
+    Q_INVOKABLE QString getAddress() const;
+    Q_INVOKABLE quint16 getPort() const;
+    Q_INVOKABLE QString getName() const;
 signals:
     void connected();
     void socketError(const QString & error_string);

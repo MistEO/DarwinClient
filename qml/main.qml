@@ -14,6 +14,8 @@ ApplicationWindow {
 
     property color emphasizeColor: "MediumVioletRed"
     property color promptColor: "LightSlateGray"
+    property color generalColor: "White"
+    property color backgroundColor: "WhiteSmoke"
 
     Component.onCompleted: {
         connectioDialog.open()
@@ -32,17 +34,6 @@ ApplicationWindow {
         }
     }
 
-    SwipeView {
-        id: mainSwpieview
-        anchors.fill: parent
-        TextPage {
-
-        }
-        CameraPage {
-
-        }
-    }
-
     header: TabBar {
         currentIndex: mainSwpieview.currentIndex
         Repeater {
@@ -51,6 +42,18 @@ ApplicationWindow {
                 text: modelData
                 onClicked: mainSwpieview.currentIndex = index
             }
+        }
+    }
+
+    SwipeView {
+        id: mainSwpieview
+        anchors.fill: parent
+        enabled: connectioDialog.connected
+        TextPage {
+
+        }
+        CameraPage {
+
         }
     }
 

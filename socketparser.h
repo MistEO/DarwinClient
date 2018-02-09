@@ -12,7 +12,8 @@ public:
     Q_INVOKABLE void connectToServer(
             const QString & address = QString("127.0.0.1"),
             const int port = 1240);
-    Q_INVOKABLE void sendText(const QString & text);
+    Q_INVOKABLE void sendRawText(const QString & text);
+    Q_INVOKABLE void sendGetImage();
 
     Q_INVOKABLE QString getAddress() const;
     Q_INVOKABLE quint16 getPort() const;
@@ -20,12 +21,16 @@ public:
 signals:
     void connected();
     void socketError(const QString & error_string);
-    void received(const QString & text);
+    void receivedStatus(const QString & text);
+    void receivedImage(const QImage & image);
 public slots:
     void readMessage();
 private:
-    void error_handler(QTcpSocket::SocketError error);
-    QTcpSocket * m_client = nullptr;
+    void _error_handler(QTcpSocket::SocketError error);
+    
+    QString _pack_request_line(const QString & request, const QString & source, const QString & version = QString("HTTP/1.1")) const;
+    
+    QTcpSocket * _client = nullptr;
 };
 
 #endif // SOCKETPARSER_H

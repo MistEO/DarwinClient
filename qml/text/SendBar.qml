@@ -29,7 +29,7 @@ Row {
         text: qsTr("发送")
         enabled: sendTextfield.text
         onClicked: {
-            client.sendText(sendTextfield.text)
+            client.sendGetImage(sendTextfield.text)
             sended(sendTextfield.text)
             sendTextfield.text = ""
         }

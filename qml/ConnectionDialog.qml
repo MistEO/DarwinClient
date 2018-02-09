@@ -15,7 +15,7 @@ Dialog {
             id: addressColumn
             spacing: 5
             Label {
-                color: promptColor
+                color: settings.promptColor
                 opacity: addressTextfield.text.length > 0
                 text: addressTextfield.placeholderText
             }
@@ -32,7 +32,7 @@ Dialog {
             id: portColumn
             spacing: 5
             Label {
-                color: promptColor
+                color: settings.promptColor
                 opacity: portTextfield.text.length > 0
                 text: portTextfield.placeholderText
             }
@@ -56,7 +56,7 @@ Dialog {
             }
             Label {
                 id: statusLabel
-                color: emphasizeColor
+                color: settings.emphasizeColor
                 anchors.verticalCenter: parent.verticalCenter
             }
         }

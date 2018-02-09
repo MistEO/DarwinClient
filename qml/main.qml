@@ -12,17 +12,16 @@ ApplicationWindow {
     height: 480
     title: qsTr("客户端")
 
-    property color emphasizeColor: "MediumVioletRed"
-    property color promptColor: "LightSlateGray"
-    property color generalColor: "White"
-    property color backgroundColor: "WhiteSmoke"
-
     Component.onCompleted: {
         connectioDialog.open()
     }
 
     Settings {
         id: settings
+        property color emphasizeColor: "MediumVioletRed"
+        property color promptColor: "LightSlateGray"
+        property color generalColor: "White"
+        property color backgroundColor: "WhiteSmoke"
         property string serverAddress: "127.0.0.1"
         property int serverPort: 1240
         property bool serverAutoconnect: false
@@ -48,9 +47,8 @@ ApplicationWindow {
     SwipeView {
         id: mainSwpieview
         anchors.fill: parent
-        enabled: connectioDialog.connected
         TextPage {
-
+            sendbarEnable: connectioDialog.connected
         }
         CameraPage {
 

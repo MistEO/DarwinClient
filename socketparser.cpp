@@ -7,6 +7,7 @@
 #include <QDataStream>
 #include <QTextStream>
 #include <QHostAddress>
+#include <QImage>
 
 #include <QDebug>
 
@@ -17,54 +18,67 @@ SocketParser::SocketParser(QObject *parent) : QObject(parent)
 
 void SocketParser::connectToServer(const QString & address, const int port)
 {
-    if (m_client) {
-        m_client->abort();
+    if (_client) {
+        _client->abort();
     }
-    delete m_client;
-    m_client = new QTcpSocket(this);
-    connect(m_client, &QTcpSocket::readyRead,
+    delete _client;
+    _client = new QTcpSocket(this);
+    connect(_client, &QTcpSocket::readyRead,
             this, &SocketParser::readMessage);
-    connect(m_client, &QTcpSocket::connected,
+    connect(_client, &QTcpSocket::connected,
             this, &SocketParser::connected);
-    connect(m_client, static_cast<void(QTcpSocket::*)(QTcpSocket::SocketError)>(&QTcpSocket::error),
-            this, &SocketParser::error_handler);
+    connect(_client, static_cast<void(QTcpSocket::*)(QTcpSocket::SocketError)>(&QTcpSocket::error),
+            this, &SocketParser::_error_handler);
 
-    m_client->connectToHost(QHostAddress(address), port);
+    _client->connectToHost(QHostAddress(address), port);
 }
 
 QString SocketParser::getAddress() const
 {
-    return m_client->peerAddress().toString();
+    return _client->peerAddress().toString();
 }
 
 quint16 SocketParser::getPort() const
 {
-    return m_client->peerPort();
+    return _client->peerPort();
 }
 
 QString SocketParser::getName() const
 {
-    return m_client->peerName();
+    return _client->peerName();
 }
 
-void SocketParser::sendText(const QString &text)
+void SocketParser::sendRawText(const QString &text)
 {
-    QTextStream out(m_client);
+    QTextStream out(_client);
     qDebug() << "send text:" << text;
     out << text;
 }
 
 void SocketParser::readMessage()
 {
-//    QDataStream in(m_client);
-    QString message(m_client->readAll());
-    qDebug() << "read message:" << message;
-    emit received(message);
+    //    QDataStream in(_client);
+    QByteArray message(_client->readAll());
+    QString text = message.left(message.indexOf("\n\n"));
+    qDebug() << text;
+    receivedStatus(text);
+    QImage image = QImage::fromData(message.right(message.indexOf("\n\n")+QString("\n\n").size()));
+    receivedImage(image);
 }
 
-void SocketParser::error_handler(QTcpSocket::SocketError error)
+void SocketParser::_error_handler(QTcpSocket::SocketError error)
 {
     Q_UNUSED(error);
-    qDebug() << m_client->errorString();
-    emit socketError(m_client->errorString());
+    qDebug() << _client->errorString();
+    emit socketError(_client->errorString());
+}
+
+void SocketParser::sendGetImage()
+{
+    sendRawText(_pack_request_line("GET", "IMAGE"));
+}
+
+QString SocketParser::_pack_request_line(const QString &request, const QString &source, const QString &version) const
+{
+    return QString("%1 %2 %3\n").arg(request).arg(source).arg(version);
 }

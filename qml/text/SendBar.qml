@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.3
+import EO.Message 1.0
 
 Row {
     signal sended(string text);
@@ -28,8 +29,9 @@ Row {
         id: sendButton
         text: qsTr("发送")
         enabled: sendTextfield.text
+
         onClicked: {
-            client.sendGetImage(sendTextfield.text)
+            client.sendInputText(sendTextfield.text)
             sended(sendTextfield.text)
             sendTextfield.text = ""
         }

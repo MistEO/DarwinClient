@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.3
+import EO.Message 1.0
 
 Page {
     property bool sendbarEnable: false
@@ -26,18 +27,15 @@ Page {
     }
     Connections {
         target: client
-        onReceivedStatus: {
-            textModel.append({ "source":"server", "message":text})
+        onReceived: {
+            textModel.append({ "source":"server", "message":message})
         }
-//        onReceivedImage: {
-//            textModel.append({ "source":"server", "message":"", "image":image})
-//        }
         onConnected: {
             textModel.append({ "source":"info",
-                                 "message": qsTr("已连接到服务器 ")+client.getAddress()+":"+client.getPort()})
+                                 "showText": qsTr("已连接到服务器 ")+client.getAddress()+":"+client.getPort()})
         }
         onSocketError: {
-            textModel.append({ "source":"info", "message":error_string})
+            textModel.append({ "source":"info", "showText":error_string})
         }
     }
     Component {
@@ -47,15 +45,10 @@ Page {
             width: textLabel.width + imageLabel.width + textList.anchors.margins
             height: textLabel.height + imageLabel.height + textList.anchors.margins
             radius: 10
-            MouseArea {
-                anchors.fill: parent
-                acceptedButtons: Qt.RightButton
-                onClicked: {
-
-                }
-            }
+            property var messageComponent: message
             Image {
                 id: imageLabel
+//                source: "image://serverImage/foobar"
             }
 
             TextInput {
@@ -64,7 +57,12 @@ Page {
                 color: "white"
                 readOnly: true
                 selectByMouse: true
-                text: message
+                text: showText
+                Component.onCompleted: {
+                    if (messageComponent) {
+                        text = messageComponent.toString()
+                    }
+                }
             }
             Component.onCompleted: {
                 switch(source) {

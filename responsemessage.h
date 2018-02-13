@@ -1,6 +1,8 @@
 #ifndef RESPONSEMESSAGE_H
 #define RESPONSEMESSAGE_H
 
+#include <QImage>
+
 #include "abstractmessage.h"
 
 class ResponseMessage : public AbstractMessage
@@ -13,8 +15,10 @@ public:
     const QMap<QString, QString> & get_header_map() const;
     const QString & get_version() const;
     const QByteArray & get_data() const;
+    QByteArray toByteArray() const;
 
-    friend QTextStream & operator >>(QTextStream & in, ResponseMessage & amsg);
+    template<typename Ty>
+    Ty data_object() const;
 
 public slots:
     QString first_line() const;
@@ -31,5 +35,20 @@ private:
     QString _header;
     QByteArray _source;
 };
+
+template<typename Ty>
+Ty ResponseMessage::data_object() const
+{
+    if (typeid(Ty) == typeid(QImage)) {
+        QImage dst(static_cast<const uchar*>((void*)_data.constData()),
+                   _header_map["Cols"].toInt(),
+                _header_map["Rows"].toInt(),
+                _header_map["Step"].toInt(),
+                QImage::Format_RGB888);
+        dst.save("test.png", "png");
+        return dst;
+    }
+    return Ty();
+}
 
 #endif // RESPONSEMESSAGE_H

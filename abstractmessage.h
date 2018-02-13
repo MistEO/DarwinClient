@@ -15,6 +15,7 @@ public:
     friend QDebug operator <<(QDebug out, const AbstractMessage & amsg);
 
     Q_INVOKABLE QString toString() const;
+    virtual QByteArray toByteArray() const = 0;
 protected:
     QMap<QString, QString> _header_map;
     QString _version = "HTTP/1.1";

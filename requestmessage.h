@@ -12,7 +12,7 @@ public:
     QMap<QString, QString> & header_map();
     QString & version();
     QByteArray & data();
-    friend QTextStream & operator <<(QTextStream & out, const RequestMessage & amsg);
+    QByteArray toByteArray() const;
 
     QString request_type;
     QString resource_type;

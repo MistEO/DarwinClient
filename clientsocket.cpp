@@ -65,17 +65,27 @@ void ClientSocket::sendInputText(const QString &text)
 
 void ClientSocket::sendMessage(const RequestMessage &message)
 {
-    QTextStream out(_client);
+    _client->write(message.toByteArray());
     qDebug() << "send message:" << message;
-    out << message;
 }
 
 void ClientSocket::readMessage()
 {
-    ResponseMessage message;
-    message.set_source(_client->readAll());
-    emit received(message.toString());
-    qDebug() << message;
+    const int bufSize = 4096;
+
+    static QByteArray buff;
+    while (!_client->atEnd()) {
+        buff += _client->read(bufSize);
+    }
+
+    if (buff.endsWith("\r")) {
+//        qDebug() << buff;
+        ResponseMessage message;
+        message.set_source(buff);
+        emit received(message.toString());
+        qDebug() << message;
+        buff.clear();
+    }
 }
 
 void ClientSocket::_error_handler(QTcpSocket::SocketError error)

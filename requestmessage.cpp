@@ -42,8 +42,7 @@ QByteArray & RequestMessage::data()
     return _data;
 }
 
-QTextStream & operator <<(QTextStream & out, const RequestMessage & amsg)
+QByteArray RequestMessage::toByteArray() const
 {
-    out << QString(amsg.first_line()+amsg.header()+"\n") << amsg._data;
-    return out;
+    return first_line().toLocal8Bit() + header().toLocal8Bit() + "\n" + _data + "\r\n";
 }

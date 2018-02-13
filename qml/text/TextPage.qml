@@ -28,7 +28,7 @@ Page {
     Connections {
         target: client
         onReceived: {
-            textModel.append({ "source":"server", "message":message})
+            textModel.append({ "source":"server", "showText":message_string})
         }
         onConnected: {
             textModel.append({ "source":"info",
@@ -45,24 +45,18 @@ Page {
             width: textLabel.width + imageLabel.width + textList.anchors.margins
             height: textLabel.height + imageLabel.height + textList.anchors.margins
             radius: 10
-            property var messageComponent: message
             Image {
                 id: imageLabel
 //                source: "image://serverImage/foobar"
             }
 
-            TextInput {
+            TextEdit {
                 id: textLabel
                 anchors.centerIn: parent
                 color: "white"
                 readOnly: true
                 selectByMouse: true
                 text: showText
-                Component.onCompleted: {
-                    if (messageComponent) {
-                        text = messageComponent.toString()
-                    }
-                }
             }
             Component.onCompleted: {
                 switch(source) {
@@ -94,7 +88,7 @@ Page {
         anchors.margins: 20
         enabled: sendbarEnable
         onSended: {
-            textModel.append({ "source":"client", "message":text })
+            textModel.append({ "source":"client", "showText":text })
         }
     }
 }

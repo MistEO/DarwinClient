@@ -74,7 +74,7 @@ void ClientSocket::readMessage()
 {
     ResponseMessage message;
     message.set_source(_client->readAll());
-    emit received(message);
+    emit received(message.toString());
     qDebug() << message;
 }
 

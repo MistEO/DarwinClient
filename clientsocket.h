@@ -23,7 +23,7 @@ public:
     Q_INVOKABLE QString getName() const;
 signals:
     void connected();
-    void received(const ResponseMessage & message);
+    void received(const QString & message_string);
     void socketError(const QString & error_string);
 public slots:
     void readMessage();

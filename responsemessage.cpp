@@ -4,11 +4,6 @@
 #include <QStringList>
 #include <QDebug>
 
-ResponseMessage::ResponseMessage(QObject *parent)
-    : AbstractMessage(parent)
-{
-}
-
 void ResponseMessage::set_source(const QByteArray &source)
 {
     _source = source;
@@ -34,11 +29,7 @@ void ResponseMessage::_unpack(const QByteArray &source)
     }
 
     int data_pos = (first_line() + header() + "\n").length();
-    _data = source.mid(data_pos, source.size()-2);
-
-    if (_header_map["Content-Type"] == "Image") {
-        QImage img = data_object<QImage>();
-    }
+    _data = source.mid(data_pos, source.size() - data_pos - 1);
 }
 
 void ResponseMessage::_unpack_status_line(const QString &status_line)

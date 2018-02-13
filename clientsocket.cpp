@@ -11,8 +11,17 @@
 
 #include <QDebug>
 
-ClientSocket::ClientSocket(QObject *parent) : QObject(parent)/*, QQuickImageProvider(QQuickImageProvider::Image)*/
+#include "messageresource.h"
+
+ClientSocket::ClientSocket(QObject *parent) : QObject(parent)
 {
+}
+
+void ClientSocket::set_resource_class(MessageResource *res)
+{
+    _resource = res;
+    connect(_resource, &MessageResource::appendedImage,
+            this, &ClientSocket::receivedImage);
 }
 
 void ClientSocket::connectToServer(const QString & address, const int port)
@@ -89,8 +98,12 @@ void ClientSocket::readMessage()
         //        qDebug() << buff;
         ResponseMessage message;
         message.set_source(buff);
-        emit received(message.toString());
+        emit received(message.toString(false));
         qDebug() << message;
+        if (_resource) {
+            _resource->append_resource(message.get_header_map(), message.get_data());
+        }
+
         buff.clear();
     }
 }

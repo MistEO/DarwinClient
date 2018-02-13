@@ -16,14 +16,16 @@ HEADERS += \
     clientsocket.h \
     abstractmessage.h \
     requestmessage.h \
-    responsemessage.h
+    responsemessage.h \
+    messageresource.h
 
 SOURCES += \
     clientsocket.cpp \
     main.cpp \
     abstractmessage.cpp \
     requestmessage.cpp \
-    responsemessage.cpp
+    responsemessage.cpp \
+    messageresource.cpp
 
 #INCLUDEPATH += /usr/include/opencv2
 #LIBS += `pkg-config opencv --cflags --libs`

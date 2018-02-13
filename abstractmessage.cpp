@@ -1,19 +1,16 @@
 #include "abstractmessage.h"
 
-AbstractMessage::AbstractMessage(QObject *parent) : QObject(parent)
-{
-
-}
-
 QDebug operator <<(QDebug out, const AbstractMessage & amsg)
 {
     out << amsg.toString();
     return out;
 }
 
-QString AbstractMessage::toString() const
+QString AbstractMessage::toString(bool with_rap) const
 {
-    return QString("%1%2\n").arg(first_line()).arg(header())
+    return first_line()
+            + header()
+            + "\n"
             + (_data.isEmpty() ? QString() : QString("QByteArray data, size:"+QString::number(_data.size())))
-            + "\r\n";
+            + (with_rap?"\r\n":"");
 }

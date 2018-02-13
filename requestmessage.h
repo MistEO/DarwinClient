@@ -5,22 +5,18 @@
 
 class RequestMessage : public AbstractMessage
 {
-    Q_OBJECT
 public:
-    explicit RequestMessage(QObject * parent = nullptr);
-
+    RequestMessage() = default;
+    ~RequestMessage() = default;
     QMap<QString, QString> & header_map();
     QString & version();
     QByteArray & data();
+    QString first_line() const;
+    QString header() const;
     QByteArray toByteArray() const;
 
     QString request_type;
     QString resource_type;
-signals:
-
-public slots:
-    QString first_line() const;
-    QString header() const;
 };
 
 #endif // REQUESTMESSAGE_H

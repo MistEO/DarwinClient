@@ -1,8 +1,8 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.3
-import EO.Message 1.0
 
 Page {
+    id: textPageRoot
     property bool sendbarEnable: false
     Rectangle {
         anchors.fill: parent
@@ -28,30 +28,49 @@ Page {
     Connections {
         target: client
         onReceived: {
-            textModel.append({ "source":"server", "showText":message_string})
+            textModel.append({ "messageType":"Response", "showText":message_string, "resourceIndex":-1})
         }
+        onReceivedImage: {
+            textModel.append( {"messageType":"Response", "showText": "", "resourceIndex":id})
+        }
+
         onConnected: {
-            textModel.append({ "source":"info",
-                                 "showText": qsTr("已连接到服务器 ")+client.getAddress()+":"+client.getPort()})
+            textModel.append({ "messageType":"Notice",
+                                 "showText": qsTr("已连接到服务器 ")+client.getAddress()+":"+client.getPort(),
+                                 "resourceIndex":-1})
         }
         onClosedConnection: {
-            textModel.append({ "source":"info", "showText": qsTr("已关闭连接")})
+            textModel.append({ "messageType":"Notice", "showText": qsTr("已关闭连接"), "resourceIndex":-1})
         }
 
         onSocketError: {
-            textModel.append({ "source":"info", "showText":error_string})
+            textModel.append({ "messageType":"Notice", "showText":error_string, "resourceIndex":-1})
         }
     }
     Component {
         id: textlistDelegate
         Rectangle {
             id: messageRec
-            width: textLabel.width + imageLabel.width + textList.anchors.margins
-            height: textLabel.height + imageLabel.height + textList.anchors.margins
+            width: textLabel.width + (imageLabel.visible?imageLabel.width:0) + textList.anchors.margins
+            height: textLabel.height + (imageLabel.visible?imageLabel.height:0) + textList.anchors.margins
             radius: 10
+
             Image {
                 id: imageLabel
-//                source: "image://serverImage/foobar"
+                property double ratio: 1
+                visible: false
+                width: textPageRoot.width / 2
+                height: width / ratio
+                anchors.centerIn: parent
+                Component.onCompleted: {
+                    if (resourceIndex != -1) {
+                        source = "image://resource/"+resourceIndex
+                        ratio = width / height
+                        visible = true
+
+                    }
+
+                }
             }
 
             TextEdit {
@@ -63,16 +82,16 @@ Page {
                 text: showText
             }
             Component.onCompleted: {
-                switch(source) {
-                case "server":
+                switch(messageType) {
+                case "Response":
                     color =  settings.promptColor
                     anchors.left = parent.left
                     break
-                case "client":
+                case "Request":
                     color = settings.emphasizeColor
                     anchors.right = parent.right
                     break
-                case "info":
+                case "Notice":
                     color = settings.generalColor
                     textLabel.color = "black"
                     anchors.horizontalCenter = parent.horizontalCenter
@@ -92,7 +111,7 @@ Page {
         anchors.margins: 20
         enabled: sendbarEnable
         onSended: {
-            textModel.append({ "source":"client", "showText":text })
+            textModel.append({ "messageType":"Request", "showText":text, "resourceIndex":-1})
         }
     }
 }

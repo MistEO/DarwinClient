@@ -3,12 +3,6 @@
 #include <QString>
 #include <QMapIterator>
 
-RequestMessage::RequestMessage(QObject *parent)
-    : AbstractMessage(parent)
-{
-
-}
-
 QString RequestMessage::first_line() const
 {
     return QString("%1 %2 %3\n")

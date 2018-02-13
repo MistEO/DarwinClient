@@ -4,8 +4,9 @@
 #include <QCoreApplication>
 
 #include "clientsocket.h"
-#include "requestmessage.h"
-#include "responsemessage.h"
+#include "messageresource.h"
+//#include "requestmessage.h"
+//#include "responsemessage.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,11 +16,10 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-
-    qmlRegisterType<RequestMessage>("EO.Message", 1, 0, "RequestMessage");
-    qmlRegisterType<ResponseMessage>("EO.Message", 1, 0, "ResponseMessage");
-    //添加上下文属性
+    MessageResource * resource = new MessageResource();
+    engine.addImageProvider(QLatin1String("resource"), resource);
     ClientSocket * client = new ClientSocket(&engine);
+    client->set_resource_class(resource);
     engine.rootContext()->setContextProperty("client", client);
 
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));

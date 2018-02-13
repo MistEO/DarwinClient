@@ -45,7 +45,6 @@ Ty ResponseMessage::data_object() const
                 _header_map["Rows"].toInt(),
                 _header_map["Step"].toInt(),
                 QImage::Format_RGB888);
-        dst.save("test.png", "png");
         return dst;
     }
     return Ty();

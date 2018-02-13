@@ -3,6 +3,7 @@ import QtQuick.Controls 2.3
 
 MenuBar {
     signal newConnection();
+    signal closeConnection();
     Menu {
         title: qsTr("连接")
         Action {
@@ -10,6 +11,13 @@ MenuBar {
             shortcut: StandardKey.New
             onTriggered: {
                 newConnection();
+            }
+        }
+        Action {
+            text: qsTr("关闭连接")
+            shortcut: StandardKey.Close
+            onTriggered: {
+                closeConnection();
             }
         }
     }

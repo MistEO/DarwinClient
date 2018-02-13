@@ -17,10 +17,7 @@ ClientSocket::ClientSocket(QObject *parent) : QObject(parent)/*, QQuickImageProv
 
 void ClientSocket::connectToServer(const QString & address, const int port)
 {
-    if (_client) {
-        _client->abort();
-    }
-    delete _client;
+    closeConnection();
     _client = new QTcpSocket(this);
     connect(_client, &QTcpSocket::readyRead,
             this, &ClientSocket::readMessage);
@@ -30,6 +27,16 @@ void ClientSocket::connectToServer(const QString & address, const int port)
             this, &ClientSocket::_error_handler);
 
     _client->connectToHost(QHostAddress(address), port);
+}
+
+void ClientSocket::closeConnection()
+{
+    if (_client) {
+        _client->abort();
+        delete _client;
+        _client = nullptr;
+        emit closedConnection();
+    }
 }
 
 QString ClientSocket::getAddress() const
@@ -79,7 +86,7 @@ void ClientSocket::readMessage()
     }
 
     if (buff.endsWith("\r")) {
-//        qDebug() << buff;
+        //        qDebug() << buff;
         ResponseMessage message;
         message.set_source(buff);
         emit received(message.toString());

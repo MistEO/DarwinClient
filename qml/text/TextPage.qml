@@ -34,6 +34,10 @@ Page {
             textModel.append({ "source":"info",
                                  "showText": qsTr("已连接到服务器 ")+client.getAddress()+":"+client.getPort()})
         }
+        onClosedConnection: {
+            textModel.append({ "source":"info", "showText": qsTr("已关闭连接")})
+        }
+
         onSocketError: {
             textModel.append({ "source":"info", "showText":error_string})
         }

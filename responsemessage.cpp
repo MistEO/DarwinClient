@@ -17,9 +17,9 @@ void ResponseMessage::set_source(const QByteArray &source)
 
 void ResponseMessage::_unpack(const QByteArray &source)
 {
-    QStringList lines = QString(_source).split("\n");
+    QStringList lines = QString(source).split("\n");
     if (lines.size() < 2) {
-        qCritical() << "Response message segmentation error:" << QString(_source);
+        qCritical() << "Response message segmentation error:" << QString(source);
         return;
     }
     auto iter = lines.begin();
@@ -33,8 +33,8 @@ void ResponseMessage::_unpack(const QByteArray &source)
         _unpack_header_line(*iter);
     }
 
-    int data_pos = (first_line() + header() + "\n").length() + 1;
-    _data = _source.mid(data_pos, _source.size()-1);
+    int data_pos = (first_line() + header() + "\n").length();
+    _data = source.mid(data_pos, source.size()-2);
 
     if (_header_map["Content-Type"] == "Image") {
         QImage img = data_object<QImage>();

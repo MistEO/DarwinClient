@@ -31,6 +31,10 @@ ApplicationWindow {
         onNewConnection: {
             connectioDialog.open()
         }
+        onCloseConnection: {
+            client.closeConnection()
+            connectioDialog.connected = false
+        }
     }
 
     header: TabBar {

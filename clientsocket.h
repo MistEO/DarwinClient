@@ -15,6 +15,7 @@ public:
     Q_INVOKABLE void connectToServer(
             const QString & address = QString("127.0.0.1"),
             const int port = 1240);
+    Q_INVOKABLE void closeConnection();
     Q_INVOKABLE void sendMessage(const RequestMessage & message);
     Q_INVOKABLE void sendInputText(const QString & text);
 
@@ -23,6 +24,7 @@ public:
     Q_INVOKABLE QString getName() const;
 signals:
     void connected();
+    void closedConnection();
     void received(const QString & message_string);
     void socketError(const QString & error_string);
 public slots:

@@ -33,6 +33,7 @@ ApplicationWindow {
         }
         onCloseConnection: {
             client.closeConnection()
+            cameraClient.closeConnection()
             connectioDialog.connected = false
         }
     }
@@ -55,7 +56,25 @@ ApplicationWindow {
             sendbarEnable: connectioDialog.connected
         }
         CameraPage {
+            id: cameraPage
+        }
+        onCurrentIndexChanged: {
+            connectCurrentClient(connectioDialog.ip, connectioDialog.port)
+        }
+        function connectCurrentClient(ip, port) {
+            client.closeConnection()
+            cameraClient.closeConnection()
+            cameraPage.stop()
 
+            switch(currentIndex) {
+            case 0:
+                client.connectToServer(ip, port)
+                break
+            case 1:
+                cameraClient.connectToServer(ip, port)
+                cameraPage.start()
+                break
+            }
         }
     }
 

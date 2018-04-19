@@ -2,8 +2,9 @@
 
 #include <QDebug>
 
-MessageResource::MessageResource()
-    : QQuickImageProvider(QQuickImageProvider::Image)
+MessageResource::MessageResource(bool keep_resource)
+    : QQuickImageProvider(QQuickImageProvider::Image),
+      _keep_resource(keep_resource)
 {
 
 }
@@ -16,8 +17,14 @@ void MessageResource::append_resource(const QMap<QString, QString> &header_map, 
                 header_map["Rows"].toInt(),
                 header_map["Step"].toInt(),
                 QImage::Format_RGB888);
-        _image_list.append(dst);
-        emit appendedImage(_image_list.size() - 1);
+        if (_keep_resource) {
+            _image_list.append(dst);
+            emit appendedImage(_image_list.size() - 1);
+        }
+        else {
+            _unkeep_image = dst;
+            emit appendedImage(0);
+        }
     }
 }
 
@@ -26,12 +33,18 @@ QImage MessageResource::requestImage(const QString &id, QSize *size, const QSize
     Q_UNUSED(size);
     Q_UNUSED(requestedSize);
 
-    int index = id.toInt();
+    if (_keep_resource) {
+        int index = id.toInt();
 
-    qDebug() << "request image" << index;
-    if (index < 0 || index >= _image_list.size()) {
-        qCritical() << "message resource request image cross:" << id;
-        return QImage();
+        qDebug() << "request image" << index;
+        if (index < 0 || index >= _image_list.size()) {
+            qCritical() << "message resource request image cross:" << id;
+            return QImage();
+        }
+        return _image_list[index];
     }
-    return _image_list[index];
+    else {
+        Q_UNUSED(id);
+        return _unkeep_image;
+    }
 }

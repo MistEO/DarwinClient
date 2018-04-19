@@ -14,7 +14,7 @@ class ClientSocket : public QObject
     Q_OBJECT
 public:
     explicit ClientSocket(QObject *parent = nullptr);
-    void set_resource_class(MessageResource * res);
+    void set_resource_object(MessageResource * res);
     Q_INVOKABLE void connectToServer(
             const QString & address = QString("127.0.0.1"),
             const int port = 1240);

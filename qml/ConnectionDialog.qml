@@ -6,6 +6,8 @@ Dialog {
     property bool connected: false
     title: qsTr("连接到服务器")
     modal: true
+    property string ip
+    property string port
 
     contentItem: Grid {
         id: textfieldGrid
@@ -64,17 +66,17 @@ Dialog {
         Item {
             width: portColumn.width
             height: portColumn.height
-//            CheckBox {
-//                id: autoConnectCheckbox
-//                text: qsTr("自动连接")
-//                anchors.verticalCenter: parent.verticalCenter
-//                checked: settings.serverAutoconnect
-//                Component.onCompleted: {
-//                    if (checked) {
-//                        accepted()
-//                    }
-//                }
-//            }
+            //            CheckBox {
+            //                id: autoConnectCheckbox
+            //                text: qsTr("自动连接")
+            //                anchors.verticalCenter: parent.verticalCenter
+            //                checked: settings.serverAutoconnect
+            //                Component.onCompleted: {
+            //                    if (checked) {
+            //                        accepted()
+            //                    }
+            //                }
+            //            }
 
             Button {
                 id: connectButton
@@ -95,10 +97,12 @@ Dialog {
         connectButton.enabled = false
         connectBusyindicator.visible = true
         statusLabel.text = qsTr("正在连接")
-        client.connectToServer(addressTextfield.text, portTextfield.text)
+        ip = addressTextfield.text
+        port = portTextfield.text
+        mainSwpieview.connectCurrentClient(ip, port)
         settings.serverAddress = addressTextfield.text
         settings.serverPort = portTextfield.text
-//        settings.serverAutoconnect = autoConnectCheckbox.checked
+        //        settings.serverAutoconnect = autoConnectCheckbox.checked
     }
     Connections {
         target: client

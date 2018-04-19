@@ -17,7 +17,7 @@ ClientSocket::ClientSocket(QObject *parent) : QObject(parent)
 {
 }
 
-void ClientSocket::set_resource_class(MessageResource *res)
+void ClientSocket::set_resource_object(MessageResource *res)
 {
     _resource = res;
     connect(_resource, &MessageResource::appendedImage,

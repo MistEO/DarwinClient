@@ -10,7 +10,7 @@ class MessageResource :public QObject, public QQuickImageProvider
 {
     Q_OBJECT
 public:
-    explicit MessageResource();
+    explicit MessageResource(bool keep_resource = true);
 
     void append_resource(const QMap<QString, QString> & header_map, const QByteArray & data);
 
@@ -22,5 +22,7 @@ signals:
 public slots:
 private:
     QList<QImage> _image_list;
+    QImage _unkeep_image;
+    bool _keep_resource;
 };
 #endif // MESSAGERESOURCE_H

@@ -14,13 +14,19 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("MrEO");
     QCoreApplication::setApplicationName("DarwinClient");
     QGuiApplication app(argc, argv);
-
     QQmlApplicationEngine engine;
+
     MessageResource * resource = new MessageResource();
     engine.addImageProvider(QLatin1String("resource"), resource);
     ClientSocket * client = new ClientSocket(&engine);
-    client->set_resource_class(resource);
+    client->set_resource_object(resource);
     engine.rootContext()->setContextProperty("client", client);
+
+    MessageResource * cameraResource = new MessageResource(false);
+    engine.addImageProvider(QLatin1String("cameraResource"), cameraResource);
+    ClientSocket * cameraClient = new ClientSocket(&engine);
+    cameraClient->set_resource_object(cameraResource);
+    engine.rootContext()->setContextProperty("cameraClient", cameraClient);
 
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty())

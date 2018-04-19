@@ -67,9 +67,7 @@ Page {
                         source = "image://resource/"+resourceIndex
                         ratio = width / height
                         visible = true
-
                     }
-
                 }
             }
 
@@ -97,7 +95,6 @@ Page {
                     anchors.horizontalCenter = parent.horizontalCenter
                     break
                 default:
-
                 }
             }
         }

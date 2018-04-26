@@ -63,12 +63,29 @@ QString ClientSocket::getName() const
     return _client->peerName();
 }
 
-void ClientSocket::sendInputText(const QString &text)
+QString ClientSocket::sendInputText(const QString &url,
+                                 const QString & method,
+                                 const QString & header,
+                                 const QString & data)
 {
     RequestMessage message;
-    message.request_type = "GET";
-    message.resource_type = text;
+    message.request_type = method;
+    message.resource_type = url;
+    if (!header.isEmpty()) {
+        QStringList header_list = header.split("\\n");
+        for (auto header : header_list) {
+            QStringList key_value = header.split(":");
+            if (key_value.size() != 2) {
+                continue;
+            }
+            message.header_map()[key_value[0]] = key_value[1];
+        }
+    }
+    if (!data.isEmpty()) {
+        message.data() = data.toLocal8Bit();
+    }
     sendMessage(message);
+    return message.toString();
 }
 
 void ClientSocket::sendMessage(const RequestMessage &message)

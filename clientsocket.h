@@ -20,7 +20,10 @@ public:
             const int port = 1240);
     Q_INVOKABLE void closeConnection();
     Q_INVOKABLE void sendMessage(const RequestMessage & message);
-    Q_INVOKABLE void sendInputText(const QString & text);
+    Q_INVOKABLE QString sendInputText(const QString & url,
+                                   const QString & method = "GET",
+                                   const QString & header = QString(),
+                                   const QString & data = QString());
 
     Q_INVOKABLE QString getAddress() const;
     Q_INVOKABLE quint16 getPort() const;

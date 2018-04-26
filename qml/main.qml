@@ -23,7 +23,7 @@ ApplicationWindow {
         property color generalColor: "White"
         property color backgroundColor: "WhiteSmoke"
         property string serverAddress: "127.0.0.1"
-        property int serverPort: 1240
+        property int serverPort: 1680
         property bool serverAutoconnect: false
     }
 
@@ -33,6 +33,7 @@ ApplicationWindow {
         }
         onCloseConnection: {
             client.closeConnection()
+            cameraPage.stop()
             cameraClient.closeConnection()
             connectioDialog.connected = false
         }

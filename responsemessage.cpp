@@ -23,7 +23,10 @@ void ResponseMessage::_unpack(const QByteArray &source)
 
     _header.clear();
     _header_map.clear();
-    for (++iter; iter != lines.end() && !iter->isEmpty(); ++iter) {
+    if (++iter == lines.end()) {
+        return;
+    }
+    for (; iter != lines.end() && !iter->isEmpty(); ++iter) {
         _header += *iter + "\n";
         _unpack_header_line(*iter);
     }

@@ -66,16 +66,8 @@ QString ClientSocket::getName() const
 void ClientSocket::sendInputText(const QString &text)
 {
     RequestMessage message;
-    QStringList words = text.split(" ");
-    if (words.size() < 2) {
-        qDebug() << "Input text segmentation error:" << text;
-        return;
-    }
-    message.request_type = words[0];
-    message.resource_type = words[1];
-    if (words.size() >= 3) {
-        message.version() = words[2];
-    }
+    message.request_type = "GET";
+    message.resource_type = text;
     sendMessage(message);
 }
 

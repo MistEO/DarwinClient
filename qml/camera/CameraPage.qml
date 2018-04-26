@@ -13,7 +13,7 @@ Page {
         interval: 50
         repeat: true
         onTriggered: {
-            cameraClient.sendInputText("Get Image")
+            cameraClient.sendInputText("/image")
         }
     }
     function start() {

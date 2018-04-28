@@ -14,7 +14,7 @@ public:
 
     friend QDebug operator <<(QDebug out, const AbstractMessage & amsg);
 
-    QString toString(bool with_rap = true) const;
+    QString toString() const;
     virtual QByteArray toByteArray() const = 0;
     virtual QString first_line() const = 0;
     virtual QString header() const = 0;

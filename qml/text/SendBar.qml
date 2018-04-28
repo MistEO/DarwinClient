@@ -12,7 +12,7 @@ Column {
             id: sendTextfield
             width: sendbarRoot.width - basicRow.spacing * 2 - sendButton.width - proButton.width
             selectByMouse: true
-            placeholderText: "URL"
+            placeholderText: "URI"
             onAccepted: {
                 sendButton.clicked()
             }
@@ -25,7 +25,7 @@ Column {
                 visible: sendTextfield.text
                 onClicked: {
                     sendTextfield.clear()
-                    getButton.checked = true
+//                    getButton.checked = true
                     headerTextfiled.clear()
                     dataTextfield.clear()
                 }
@@ -40,7 +40,7 @@ Column {
                 var message =
                         client.sendInputText(
                             sendTextfield.text,
-                            (postButton.checked ? "POST":"GET"),
+                            "GET",
                             headerTextfiled.text,
                             dataTextfield.text)
                 sended(message)
@@ -60,28 +60,30 @@ Column {
             }
         }
     }
-    Row {
-        id: methodRow
-        visible: false
-        RadioButton {
-            id: getButton
-            text: "GET"
-            checked: true
-        }
-        RadioButton {
-            id: postButton
-            text: "POST"
-        }
-    }
+//    Row {
+//        id: methodRow
+//        visible: false
+//        RadioButton {
+//            id: getButton
+//            text: "GET"
+//            checked: true
+//        }
+//        RadioButton {
+//            id: postButton
+//            text: "POST"
+//        }
+//    }
     TextArea {
         id: headerTextfiled
+        height: 0
         visible: false
         selectByMouse: true
-        placeholderText: qsTr("请求头部，键值间以\":\"分隔，多个字段间以\"\\n\"分隔")
+        placeholderText: qsTr("请求头部，键值间以\": \"分隔，多个字段间以\"\\n\"分隔")
         width: parent.width
     }
     TextArea {
         id: dataTextfield
+        height: 0
         visible: false
         selectByMouse: true
         placeholderText: qsTr("请求数据")
@@ -91,9 +93,18 @@ Column {
     states: [
         State {
             name: "pro"
-            PropertyChanges { target: methodRow; visible: true }
-            PropertyChanges { target: headerTextfiled; visible: true }
-            PropertyChanges { target: dataTextfield; visible: true }
+//            PropertyChanges { target: methodRow; visible: true }
+            PropertyChanges { target: headerTextfiled; visible:true; height: sendTextfield.height }
+            PropertyChanges { target: dataTextfield; visible:true; height: sendTextfield.height }
+        }
+    ]
+    transitions: [
+        Transition {
+            NumberAnimation {
+                easing.type: Easing.InQuad
+                duration: 200;
+                properties: "height"
+            }
         }
     ]
 }

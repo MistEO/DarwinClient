@@ -11,8 +11,12 @@ MessageResource::MessageResource(bool keep_resource)
 
 void MessageResource::append_resource(const QMap<QString, QString> &header_map, const QByteArray &data)
 {
-    if (header_map["Content-Type"] == "Image") {
-        QImage dst(static_cast<const uchar*>((void*)data.constData()),
+    if (header_map["Content-Type"] == "image") {
+        QByteArray dst_data = data;
+        if (dst_data.endsWith("\r\n")) {
+            dst_data.remove(dst_data.length()-3, 2);
+        }
+        QImage dst(static_cast<const uchar*>((void*)dst_data.constData()),
                    header_map["Cols"].toInt(),
                 header_map["Rows"].toInt(),
                 header_map["Step"].toInt(),

@@ -12,7 +12,7 @@ void ResponseMessage::set_source(const QByteArray &source)
 
 void ResponseMessage::_unpack(const QByteArray &source)
 {
-    QStringList lines = QString(source).split("\n");
+    QStringList lines = QString(source).split("\r\n");
     if (lines.size() < 2) {
         qCritical() << "Response message segmentation error:" << QString(source);
         return;
@@ -23,16 +23,13 @@ void ResponseMessage::_unpack(const QByteArray &source)
 
     _header.clear();
     _header_map.clear();
-    if (++iter == lines.end()) {
-        return;
-    }
-    for (; iter != lines.end() && !iter->isEmpty(); ++iter) {
-        _header += *iter + "\n";
+    for (++iter; !iter->isEmpty(); ++iter) {
+        _header += *iter + "\r\n";
         _unpack_header_line(*iter);
     }
 
-    int data_pos = (first_line() + header() + "\n").length();
-    _data = source.mid(data_pos, source.size() - data_pos - 1);
+    int data_pos = (first_line() + header() + "\r\n").length();
+    _data = source.right(source.length() - data_pos);
 }
 
 void ResponseMessage::_unpack_status_line(const QString &status_line)
@@ -55,7 +52,7 @@ void ResponseMessage::_unpack_status_line(const QString &status_line)
 
 void ResponseMessage::_unpack_header_line(const QString &header_line)
 {
-    QStringList pair = header_line.split(":");
+    QStringList pair = header_line.split(": ");
     if (pair.size() != 2) {
         qCritical() << "Response header segmentation error:" << header_line;
         return;
@@ -65,7 +62,7 @@ void ResponseMessage::_unpack_header_line(const QString &header_line)
 
 QString ResponseMessage::first_line() const
 {
-    return _status_line + "\n";
+    return _status_line + "\r\n";
 }
 
 QString ResponseMessage::header() const

@@ -103,16 +103,15 @@ void ClientSocket::readMessage()
         buff += _client->read(bufSize);
     }
 
-    if (buff.endsWith("\r")) {
+    if (buff.endsWith("\r\n")) {
         //        qDebug() << buff;
         ResponseMessage message;
         message.set_source(buff);
-        emit received(message.toString(false));
+        emit received(message.toString());
         qDebug() << message;
         if (_resource) {
             _resource->append_resource(message.get_header_map(), message.get_data());
         }
-
         buff.clear();
     }
 }

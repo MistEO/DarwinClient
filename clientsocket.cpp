@@ -103,6 +103,11 @@ void ClientSocket::readMessage()
         buff += _client->read(bufSize);
     }
 
+    if (buff.left(8) != "HTTP/1.1") {
+        buff.clear();
+        qDebug() << "recv buff error, cleared";
+    }
+
     if (buff.endsWith("\r\n")) {
         //        qDebug() << buff;
         ResponseMessage message;

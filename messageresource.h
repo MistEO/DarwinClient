@@ -3,14 +3,16 @@
 
 #include <QObject>
 #include <QQuickImageProvider>
-#include <QList>
+#include <QVector>
 #include <QImage>
+#include <QFileInfo>
 
 class MessageResource :public QObject, public QQuickImageProvider
 {
     Q_OBJECT
 public:
     explicit MessageResource(bool keep_resource = true);
+    ~MessageResource();
 
     void append_resource(const QMap<QString, QString> & header_map, const QByteArray & data);
 
@@ -21,7 +23,7 @@ signals:
     void appendedAudio(int index);
 public slots:
 private:
-    QList<QImage> _image_list;
+    QVector<QFileInfo> _image_fileinfos;
     QImage _unkeep_image;
     bool _keep_resource;
 };

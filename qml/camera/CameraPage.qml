@@ -10,7 +10,7 @@ Page {
 
     Timer {
         id: refreshTimer
-        interval: 50
+        interval: 2000
         repeat: true
         onTriggered: {
             cameraClient.sendInputText("/image")

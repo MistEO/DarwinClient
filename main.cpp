@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QCoreApplication>
+#include <QTextCodec>
 
 #include "clientsocket.h"
 #include "messageresource.h"
@@ -10,6 +11,9 @@
 
 int main(int argc, char *argv[])
 {
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    QTextCodec::setCodecForLocale(codec);
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setOrganizationName("MrEO");
     QCoreApplication::setApplicationName("DarwinClient");

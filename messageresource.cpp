@@ -22,15 +22,11 @@ MessageResource::~MessageResource()
 void MessageResource::append_resource(const QMap<QString, QString> &header_map, const QByteArray &data)
 {
     if (header_map["Content-Type"] == "image") {
-        QByteArray dst_data = data;
-        if (dst_data.endsWith("\r\n")) {
-            dst_data.remove(dst_data.length()-3, 2);
-        }
-        if (dst_data.size() != header_map["Content-Length"].toInt()) {
-            qDebug() << "data size error: " << dst_data.size();
-            return;
-        }
-        QImage dst(static_cast<const uchar*>((void*)dst_data.constData()),
+//        if (data.size() != header_map["Content-Length"].toInt()) {
+//            qDebug() << "data size error: " << data.size();
+//            return;
+//        }
+        QImage dst(static_cast<const uchar*>((void*)data.constData()),
                    header_map["Cols"].toInt(),
                 header_map["Rows"].toInt(),
                 header_map["Step"].toInt(),

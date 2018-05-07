@@ -9,6 +9,7 @@ class ResponseMessage : public AbstractMessage
 {
 public:
     ResponseMessage() = default;
+    ResponseMessage(const QByteArray &source);
     ~ResponseMessage() = default;
     void set_source(const QByteArray & source);
     const QMap<QString, QString> & get_header_map() const;
@@ -18,6 +19,8 @@ public:
 
     QString first_line() const;
     QString header() const;
+
+    bool completed() const;
 
 private:
     void _unpack(const QByteArray & source);

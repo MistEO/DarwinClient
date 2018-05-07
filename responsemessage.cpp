@@ -4,6 +4,11 @@
 #include <QStringList>
 #include <QDebug>
 
+ResponseMessage::ResponseMessage(const QByteArray &source)
+{
+    set_source(source);
+}
+
 void ResponseMessage::set_source(const QByteArray &source)
 {
     _source = source;
@@ -88,4 +93,15 @@ const QByteArray & ResponseMessage::get_data() const
 QByteArray ResponseMessage::toByteArray() const
 {
     return _source;
+}
+
+bool ResponseMessage::completed() const
+{
+    if (_header_map["Content-Length"].toInt() == _data.size()
+            || _source.endsWith("\r\n\r\n")) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }

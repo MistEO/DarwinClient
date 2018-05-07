@@ -108,10 +108,9 @@ void ClientSocket::readMessage()
         qDebug() << "recv buff error, cleared";
     }
 
-    if (buff.endsWith("\r\n")) {
-        //        qDebug() << buff;
-        ResponseMessage message;
-        message.set_source(buff);
+    ResponseMessage message(buff);
+    if (message.completed()) {
+        ResponseMessage message(buff);
         emit received(message.toString());
         qDebug() << message;
         if (_resource) {

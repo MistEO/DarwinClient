@@ -7,15 +7,76 @@ Page {
         anchors.fill: parent
         cache: false
     }
-
     Timer {
         id: refreshTimer
-        interval: 2000
+        interval: settings.cameraRefreshIntv
         repeat: true
         onTriggered: {
             cameraClient.sendInputText("/image")
         }
     }
+    MouseArea {
+        anchors.fill: image
+        acceptedButtons: Qt.RightButton
+        onClicked: {
+            contentMenu.popup();
+        }
+    }
+    Menu {
+        id: contentMenu
+        MenuItem {
+            text: qsTr("保存")
+            onTriggered: {
+                cameraResource.saveImage(0)
+            }
+        }
+        Menu {
+            title: qsTr("刷新速率")
+//            MenuItem {
+//                text: qsTr("60Hz")
+//                onTriggered: {
+//                    settings.cameraRefreshIntv = 1000 / 60
+//                }
+//            }
+            MenuItem {
+                text: qsTr("24Hz")
+                onTriggered: {
+                    settings.cameraRefreshIntv = 1000 / 24
+                }
+            }
+            MenuItem {
+                text: qsTr("10Hz")
+                onTriggered: {
+                    settings.cameraRefreshIntv = 1000 / 10
+                }
+            }
+            MenuItem {
+                text: qsTr("5Hz")
+                onTriggered: {
+                    settings.cameraRefreshIntv = 1000 / 5
+                }
+            }
+            MenuItem {
+                text: qsTr("2Hz")
+                onTriggered: {
+                    settings.cameraRefreshIntv = 1000 / 2
+                }
+            }
+            MenuItem {
+                text: qsTr("1Hz")
+                onTriggered: {
+                    settings.cameraRefreshIntv = 1000 / 1
+                }
+            }
+            MenuItem {
+                text: qsTr("0.5Hz")
+                onTriggered: {
+                    settings.cameraRefreshIntv = 1000 / 0.5
+                }
+            }
+        }
+    }
+
     function start() {
         refreshTimer.start()
     }

@@ -6,6 +6,7 @@
 #include <QVector>
 #include <QImage>
 #include <QFileInfo>
+#include <QMutex>
 
 class MessageResource :public QObject, public QQuickImageProvider
 {
@@ -17,6 +18,7 @@ public:
     void append_resource(const QMap<QString, QString> & header_map, const QByteArray & data);
 
     QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
+    Q_INVOKABLE bool saveImage(const QString& id, const QString &filename = QString());
 
 signals:
     void appendedImage(int index);
@@ -26,5 +28,6 @@ private:
     QVector<QFileInfo> _image_fileinfos;
     QImage _unkeep_image;
     bool _keep_resource;
+    QMutex image_locker;
 };
 #endif // MESSAGERESOURCE_H

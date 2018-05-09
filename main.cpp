@@ -22,12 +22,14 @@ int main(int argc, char *argv[])
 
     MessageResource * resource = new MessageResource();
     engine.addImageProvider(QLatin1String("resource"), resource);
+    engine.rootContext()->setContextProperty("resource", resource);
     ClientSocket * client = new ClientSocket(&engine);
     client->set_resource_object(resource);
     engine.rootContext()->setContextProperty("client", client);
 
     MessageResource * cameraResource = new MessageResource(false);
     engine.addImageProvider(QLatin1String("cameraResource"), cameraResource);
+    engine.rootContext()->setContextProperty("cameraResource", cameraResource);
     ClientSocket * cameraClient = new ClientSocket(&engine);
     cameraClient->set_resource_object(cameraResource);
     engine.rootContext()->setContextProperty("cameraClient", cameraClient);

@@ -13,8 +13,18 @@ QDebug operator <<(QDebug out, const AbstractMessage & amsg)
 
 QString AbstractMessage::toString() const
 {
+    QString data_string;
+    if (_header_map.value("Content-Type") == "text") {
+        data_string = _data;
+    }
+    else if (_data.isEmpty()) {
+        ;
+    }
+    else {
+        data_string = QString("QByteArray data, size:"+QString::number(_data.size()));
+    }
     return first_line()
             + header()
             + "\r\n"
-            + (_data.isEmpty() ? QString() : QString("QByteArray data, size:"+QString::number(_data.size())));
+            + data_string;
 }

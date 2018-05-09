@@ -25,6 +25,7 @@ ApplicationWindow {
         property string serverAddress: "127.0.0.1"
         property int serverPort: 1680
         property bool serverAutoconnect: false
+        property int cameraRefreshIntv: 2000
     }
 
     menuBar: AppMenuBar {

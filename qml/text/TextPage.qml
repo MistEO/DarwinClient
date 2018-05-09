@@ -69,6 +69,23 @@ Page {
                         visible = true
                     }
                 }
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.RightButton
+                    onClicked: {
+                        contentMenu.popup();
+                    }
+                }
+
+                Menu {
+                    id: contentMenu
+                    MenuItem {
+                        text: qsTr("保存")
+                        onTriggered: {
+                            resource.saveImage(resourceIndex)
+                        }
+                    }
+                }
             }
 
             TextEdit {

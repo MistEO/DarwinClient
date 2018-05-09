@@ -6,7 +6,6 @@
 #include <QVector>
 #include <QImage>
 #include <QFileInfo>
-#include <QMutex>
 
 class MessageResource :public QObject, public QQuickImageProvider
 {
@@ -28,6 +27,5 @@ private:
     QVector<QFileInfo> _image_fileinfos;
     QImage _unkeep_image;
     bool _keep_resource;
-    QMutex image_locker;
 };
 #endif // MESSAGERESOURCE_H

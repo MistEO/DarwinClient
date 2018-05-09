@@ -45,9 +45,7 @@ void MessageResource::append_resource(const QMap<QString, QString> &header_map, 
             emit appendedImage(_image_fileinfos.size() - 1);
         }
         else {
-            image_locker.lock();
             _unkeep_image = dst;
-            image_locker.unlock();
             emit appendedImage(0);
         }
     }
@@ -99,8 +97,6 @@ bool MessageResource::saveImage(const QString& id, const QString& filename)
                 filename.isEmpty()
                 ? (QDateTime::currentDateTime().toString("yyyy.MM.dd-hh:mm:ss") + ".png")
                 : filename;
-        image_locker.lock();
         _unkeep_image.save(dst_filename, "png", 100);
-        image_locker.unlock();
     }
 }

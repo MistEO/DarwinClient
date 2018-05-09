@@ -25,9 +25,23 @@ Page {
     Menu {
         id: contentMenu
         MenuItem {
-            text: qsTr("保存")
+            text: qsTr("暂停")
             onTriggered: {
-                cameraResource.saveImage(0)
+                if (refreshTimer.running) {
+                    refreshTimer.stop();
+                    text = qsTr("开始")
+                }
+                else {
+                    refreshTimer.start();
+                    text = qsTr("暂停")
+                }
+            }
+        }
+        MenuItem {
+            text: qsTr("保存")
+            enabled: !refreshTimer.running
+            onTriggered: {
+                cameraResource.saveImage(0);
             }
         }
         Menu {

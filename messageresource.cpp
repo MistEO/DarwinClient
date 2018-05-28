@@ -4,6 +4,8 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QDir>
+#include <fstream>
+#include <ios>
 
 MessageResource::MessageResource(bool keep_resource)
     : QQuickImageProvider(QQuickImageProvider::Image),
@@ -48,6 +50,12 @@ void MessageResource::append_resource(const QMap<QString, QString> &header_map, 
             _unkeep_image = dst;
             emit appendedImage(0);
         }
+    }
+    if (header_map["Content-Type"] == "audio/wav") {
+        std::ofstream wav_file;
+        wav_file.open("demo.wav", std::ios::out | std::ios::binary);
+        wav_file.write(data.toStdString().c_str(), data.size());
+        wav_file.close();
     }
 }
 
